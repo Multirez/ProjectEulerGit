@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PrimeSequence.cs" />
+    <Compile Include="PrimeSequenceAlt.cs" />
+    <Compile Include="PrimeSequenceOptimized.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
