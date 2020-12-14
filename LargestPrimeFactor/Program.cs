@@ -12,62 +12,49 @@ namespace ElerTest
         static void Main(string[] args)
         {
             string message = "Input number and press [Enter]:";
-            long n = 15;// 77521;
+            long n = 15;// 77521, 120170295029;
             Console.WriteLine(message);
             while (long.TryParse(Console.ReadLine(), out n))
             {
                 var sw = Stopwatch.StartNew();
                 long answer = GetMaxPrimeDividerRequrse(n);
+                //long answer = GetPrimeById(n);
                 sw.Stop();
                 Console.WriteLine($"Answer:{answer} Elapsed:{sw.Elapsed}\n");
                 Console.WriteLine(message);
             }           
         }
 
-        private static long GetMaxPrimeDivider(long input)
-        {
-            long maxValue = (long)Math.Sqrt(input);
-            long maxDivider = input;
-            var priveEnum = new PrimeSequenceAlt().GetPrimeEnumerator();
-            priveEnum.MoveNext();
-
-            long counter = 0;
-            while (priveEnum.Current <= maxValue)
-            {
-                if (TestDivide2(input, priveEnum.Current))
-                {
-                    maxDivider = priveEnum.Current;
-                    //Console.WriteLine(" " + priveEnum.Current);
-                }
-                //Console.WriteLine("MaxValue: " + maxValue);
-                priveEnum.MoveNext();
-                counter++;
-            }
-            Console.WriteLine("Prime count: " + counter + " last " + priveEnum.Current);
-            return maxDivider;
-        }
-
         private static long GetMaxPrimeDividerRequrse(long input)
         {
             long maxValue = (long)Math.Sqrt(input);
             long maxDivider = input;
-            var priveEnum = new PrimeSequenceOptimized().GetPrimeEnumerator();
+            var primeEnum = new PrimeSequenceAlt().GetPrimeEnumerator();
 
             long counter = 0;
             long divided;
-            while (priveEnum.MoveNext() && priveEnum.Current <= maxValue)
+            while (primeEnum.MoveNext() && primeEnum.Current <= maxValue)
             {
-                if (TestDivide(input, priveEnum.Current, out divided))
+                if (TestDivide(input, primeEnum.Current, out divided))
                 {
-                    maxDivider = priveEnum.Current;
+                    maxDivider = primeEnum.Current;
                     if (divided > maxDivider)
                         divided = GetMaxPrimeDividerRequrse(divided);
                     return Math.Max(maxDivider, divided);
                 }
                 counter++;
             }
-            //Console.WriteLine("Prime count: " + counter + " last " + priveEnum.Current);
+            //Console.WriteLine("Prime count: " + counter + " last " + primeEnum.Current);
             return maxDivider;
+        }
+
+        private static long GetPrimeById(long count)
+        {
+            var primeEnum = new PrimeSequenceAlt().GetPrimeEnumerator();
+            for (long i = 0; i < count; i++)
+                primeEnum.MoveNext();
+
+            return primeEnum.Current;
         }
 
         private static bool TestDivide(long value, long div, out long result)
